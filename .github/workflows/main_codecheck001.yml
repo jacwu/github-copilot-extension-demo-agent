@@ -63,5 +63,4 @@ jobs:
         id: deploy-to-webapp
         with:
           app-name: 'codecheck001'
-          slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_53326147F3D64A45B9D01D02386629AD }}
