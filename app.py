@@ -1,12 +1,12 @@
-from flask import Flask, request, Response, stream_with_context
+from flask import Flask, request, Response, stream_with_context, render_template
 import requests
-from github_utils import get_github_user
+from utils import get_github_user
 
 app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
 def home():
-    return "Ahoy, matey! Welcome to the Blackbeard Pirate GitHub Copilot Extension!"
+    return render_template('index.html')
 
 @app.route("/", methods=["POST"])
 def handle_post():
@@ -63,7 +63,7 @@ def handle_post():
     })
     messages.insert(0, {
         "role": "system",
-        "content": f"Start every response with the user's name, which is @{user.login}, and also say 'my name is PythonGenie'."
+        "content": f"Start every response with the user's name, which is @{user}, and also say 'my name is PythonGenie'."
     })
 
     # Keep only the latest 3 messages
