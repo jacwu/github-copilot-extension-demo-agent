@@ -89,4 +89,4 @@ def handle_post():
     return Response(stream_with_context(generate()), mimetype='application/json')
 
 if __name__ == "__main__":
-    app.run(debug=True, port = 3000)
+    app.run()
