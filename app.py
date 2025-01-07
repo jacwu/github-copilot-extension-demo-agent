@@ -64,7 +64,7 @@ def handle_post():
     })
     messages.insert(0, {
         "role": "system",
-        "content": f"Start every response with the user's name, which is @{user}, and also say 'my name is PythonGenie'."
+        "content": f"Start every response with the user's name, which is @{user}, and also say 'this is PythonGenie'."
     })
 
     # Keep only 3 messages
