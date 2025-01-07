@@ -32,7 +32,8 @@ def handle_post():
     ####
     - Check the following code is Python or not.
     - If not, let the user know you only work on Python.
-    - If it is Python, clarify whether the code meets the code guideline and give check feedback to user.
+    - If it is Python, clarify whether the code meets the code guideline
+    - If there is some code which doesn't meet the guideline, provide a suggestion to fix it.
 
     Code guideline
     ####
