@@ -67,7 +67,7 @@ def handle_post():
         "content": f"Start every response with the user's name, which is @{user}, and also say 'my name is PythonGenie'."
     })
 
-    # Keep only the latest 3 messages
+    # Keep only 3 messages
     if len(messages) > 3:
         messages[2:len(messages)-1] = []
     
