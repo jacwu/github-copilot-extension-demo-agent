@@ -1,4 +1,4 @@
-Flask==2.3.3
+flask>=2.0.0
 Werkzeug==2.3.7 
-requests==2.31.0
+requests>=2.25.1
 ecdsa==0.18.0
