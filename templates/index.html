@@ -8,14 +8,64 @@
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
+            text-align: center;
         }
         h1 {
+            color: #2c3e50;
+        }
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 50px;
+        }
+        .logo-container img {
+            width: 100px;
+            height: 100px;
+        }
+        .message {
+            margin-top: 50px;
+            font-size: 18px;
+            color: #2c3e50;
+        }
+        .headers-container {
+            margin-top: 30px;
+            text-align: left;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: #f8f9fa;
+        }
+        .header-item {
+            margin: 10px 0;
+            padding: 5px;
+            border-bottom: 1px solid #eee;
+        }
+        .header-key {
+            font-weight: bold;
             color: #2c3e50;
         }
     </style>
 </head>
 <body>
     <h1>Welcome to Python Code Check</h1>
-    <p>This extension helps you verify Python code against coding guidelines.</p>
+    <div class="logo-container">
+        <img src="mermaid-logo.png" alt="Mermaid Logo">
+        <img src="link-icon.png" alt="Link Icon">
+        <img src="github-logo.png" alt="GitHub Logo">
+    </div>
+    <div class="message">
+        <p>You have successfully authenticated the Pythoncodecheck extension for GitHub Copilot</p>
+        <p>You can now continue chatting with GitHub Copilot</p>
+    </div>
+    <div class="headers-container">
+        <h2>Request Headers</h2>
+        {% for key, value in headers.items() %}
+        <div class="header-item">
+            <span class="header-key">{{ key }}:</span> {{ value }}
+        </div>
+        {% endfor %}
+    </div>
 </body>
 </html>

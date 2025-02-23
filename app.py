@@ -4,21 +4,15 @@ from utils import GitHubUtils
 
 app = Flask(__name__)
 
-@app.route("/", methods=["GET"])
-def index():
-    # Check if user is already authorized
-    github_utils = GitHubUtils(request)
-    if github_utils.get_github_user():
-        return redirect(url_for('home'))
-    return redirect(url_for('preauthorization'))
-
 @app.route("/preauthorization", methods=["GET"])
 def preauthorization():
-    return render_template('preauthorization.html')
+    headers = dict(request.headers)
+    return render_template('preauthorization.html', headers=headers)
 
 @app.route("/home", methods=["GET"])
 def home():
-    return render_template('index.html')
+    headers = dict(request.headers)
+    return render_template('index.html', headers=headers)
 
 @app.route("/", methods=["POST"])
 def handle_post():

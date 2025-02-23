@@ -29,6 +29,16 @@
         .auth-button:hover {
             background-color: #34495e;
         }
+        .headers-container {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+        }
+        .header-item {
+            margin: 5px 0;
+            word-wrap: break-word;
+        }
     </style>
 </head>
 <body>
@@ -36,6 +46,15 @@
     <div class="auth-container">
         <p>To use this service, you need to authorize with GitHub first.</p>
         <button class="auth-button" onclick="window.location.href='/auth'">Authorize with GitHub</button>
+    </div>
+    
+    <div class="headers-container">
+        <h2>Request Headers:</h2>
+        {% for key, value in headers.items() %}
+            <div class="header-item">
+                <strong>{{ key }}:</strong> {{ value }}
+            </div>
+        {% endfor %}
     </div>
 </body>
 </html>
