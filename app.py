@@ -1,19 +1,34 @@
-from flask import Flask, request, Response, stream_with_context, render_template
+from flask import Flask, request, Response, stream_with_context, render_template, redirect, url_for
 import requests
-from utils import get_github_user
+from utils import GitHubUtils
 
 app = Flask(__name__)
 
 @app.route("/", methods=["GET"])
+def index():
+    # Check if user is already authorized
+    github_utils = GitHubUtils(request)
+    if github_utils.get_github_user():
+        return redirect(url_for('home'))
+    return redirect(url_for('preauthorization'))
+
+@app.route("/preauthorization", methods=["GET"])
+def preauthorization():
+    return render_template('preauthorization.html')
+
+@app.route("/home", methods=["GET"])
 def home():
     return render_template('index.html')
 
 @app.route("/", methods=["POST"])
 def handle_post():
-    # Get GitHub token and identify user
-    token_for_user = request.headers.get("X-GitHub-Token")
-    user = get_github_user(token_for_user)
-    print("User:", user)
+    # Create GitHubUtils instance and get user
+    github_utils = GitHubUtils(request)
+    user = github_utils.get_github_user()
+
+    # Check if user is authenticated
+    if not user:
+        return Response('Unauthorized: Invalid GitHub token', status=401)
 
     # Parse request data
     payload = request.get_json()
@@ -60,7 +75,7 @@ def handle_post():
     })
     messages.insert(0, {
         "role": "system",
-        "content": "You are a helpful python progamming assistant."
+        "content": "You are a helpful python programming assistant."
     })
     messages.insert(0, {
         "role": "system",
@@ -78,7 +93,7 @@ def handle_post():
         response = requests.post(
             "https://api.githubcopilot.com/chat/completions",
             headers={
-                "Authorization": f"Bearer {token_for_user}",
+                "Authorization": f"Bearer {github_utils.token}",
                 "Content-Type": "application/json"
             },
             json={"messages": messages, "stream": True},
