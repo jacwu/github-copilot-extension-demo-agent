@@ -43,7 +43,7 @@ def handle_post():
     # 调用 Copilot API
     json_result = copilot_handler.call_copilot_api(messages)
     print("Result:", json_result)
-    return Response(json_result, mimetype='application/json')
+    return Response(json_result["choices"][0]["message"]["content"], mimetype='text/plain')
 
 if __name__ == "__main__":
     app.run(port=8000)
