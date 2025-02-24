@@ -73,7 +73,7 @@ def build_messages(user_name: str, selected_code: str = None) -> List[Dict[str, 
         })
         messages.insert(0, {
             "role": "system",
-            "content": "You are a helpful programming assistant specialized in code analysis. You always provide code analysis based on guidelines. But don't ask any questions"
+            "content": "You are a helpful programming assistant specialized in code analysis. You always show the guidelines that you refer first, then provide code analysis based on guidelines. But don't ask any questions"
         })
         messages.insert(0, {
             "role": "system",
@@ -114,7 +114,7 @@ def handle_post():
     client_selection_block = next(
         (ref for ref in copilot_references if ref["type"] == "client.selection"),
         None
-    )
+    ) if copilot_references else None
 
     target_code_block = None
     # Build user message
@@ -182,7 +182,7 @@ def handle_post():
         for chunk in response.iter_content(chunk_size=None):
             yield chunk
 
-    return response(stream_with_context(generate()), mimetype="application/json")
+    return Response(stream_with_context(generate()), mimetype="application/json")
 
 if __name__ == "__main__":
     app.run(port=8000)
