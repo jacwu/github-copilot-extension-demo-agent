@@ -132,22 +132,22 @@ class CopilotHandler:
         print("Second messages:", messages)
         
         def generate():
-        response = requests.post(
-            "https://models.inference.ai.azure.com/chat/completions",
-            headers={
-                "Authorization": f"Bearer {self.token}",
-                "Content-Type": "application/json"
-            },
-            json={
-                "messages": messages,
-                "model": "gpt-4o",
-                "tools": [{"type": "function", "function": func} for func in self.functions],
-                "stream": True
-            },
-            stream=True
-        )
+            response = requests.post(
+                "https://models.inference.ai.azure.com/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {self.token}",
+                    "Content-Type": "application/json"
+                },
+                json={
+                    "messages": messages,
+                    "model": "gpt-4o",
+                    "tools": [{"type": "function", "function": func} for func in self.functions],
+                    "stream": True
+                },
+                stream=True
+            )
 
-        for chunk in response.iter_content(chunk_size=None):
-            yield chunk
+            for chunk in response.iter_content(chunk_size=None):
+                yield chunk
 
         return response(stream_with_context(generate()), mimetype="application/json")
