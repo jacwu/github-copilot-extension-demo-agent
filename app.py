@@ -8,7 +8,6 @@ app = Flask(__name__)
 
 @app.route("/home", methods=["GET"])
 def home():
-    headers = dict(request.headers)
     return render_template('index.html')
 
 @app.route("/", methods=["POST"])
@@ -19,6 +18,7 @@ def handle_post():
         return Response('Unauthorized: Invalid GitHub signature', status=401)
     user = github_utils.get_github_user()
     
+    payload = request.get_json()
     copilot_references = payload["messages"][-1]["copilot_references"]
     client_selection_block = next(
         (ref for ref in copilot_references if ref["type"] == "client.selection"),
@@ -38,8 +38,9 @@ def handle_post():
     
     # 调用 Copilot API
     response = copilot_handler.call_copilot_api(messages)
+    response_json = json.dumps(response)
 
-    return Response(json.dumps(response), mimetype='application/json')
+    return Response(response_json, mimetype='application/json')
 
 if __name__ == "__main__":
     app.run(port=8000)
