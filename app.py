@@ -30,6 +30,8 @@ def handle_post():
     if client_selection_block and "data" in client_selection_block and "content" in client_selection_block["data"]:
         target_code_block = client_selection_block["data"]["content"]
 
+    print("Target Code Block:", target_code_block)
+    
     copilot_handler = CopilotHandler(github_utils.token)
     messages = copilot_handler.build_messages(
         user_name=user,

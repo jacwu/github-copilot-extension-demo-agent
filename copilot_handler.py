@@ -58,7 +58,7 @@ class CopilotHandler:
 
         Code to analyze:
         """
-
+        print("Selected Code:", selected_code)
         messages = []
         if selected_code:
             prompt = f"{prompt} {selected_code}"
@@ -80,6 +80,7 @@ class CopilotHandler:
         if len(messages) > 3:
             messages[2:len(messages)-1] = []
 
+        print("build_messages:", messages)
         return messages
 
     def call_copilot_api(self, messages: List[Dict[str, str]]) -> requests.Response:
