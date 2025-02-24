@@ -3,6 +3,7 @@ from typing import List, Dict, Any
 import json
 from functions.python_guidelines import get_python_guideline
 from functions.java_guidelines import get_java_guideline
+from functions.no_supported_scenarios import get_no_supported_scenarios
 
 class CopilotHandler:
     def __init__(self, github_token: str):
@@ -10,7 +11,8 @@ class CopilotHandler:
         self.functions = self._get_functions()
         self.function_map = {
             'get_python_guideline': get_python_guideline,
-            'get_java_guideline': get_java_guideline
+            'get_java_guideline': get_java_guideline,
+            'get_no_supported_scenarios': get_no_supported_scenarios
         }
 
     def _get_functions(self) -> List[Dict[str, Any]]:
@@ -43,6 +45,15 @@ class CopilotHandler:
                     },
                     "required": ["code"]
                 }
+            },
+            {
+                "name": "get_no_supported_scenarios",
+                "description": "获取不支持场景的指导方针",
+                "parameters": {
+                    "type": "object",
+                    "properties": {},
+                    "required": []
+                }
             }
         ]
 
@@ -50,10 +61,9 @@ class CopilotHandler:
 
         prompt = """
         Please analyze the following code:
-        - If no code is provided, reminde the user to provide code
-        - If the code is not in Python or Java, remind the user to provide Python or Java code
         - If it's Python code, use get_python_guideline function to analyze it
         - If it's Java code, use get_java_guideline function to analyze it
+        - If the code is not Python and Java, or not provided, use get_no_supported_scenarios function to provide guidance
         - Based on the function results, provide detailed suggestions for improvement
 
         Code to analyze:
@@ -103,36 +113,41 @@ class CopilotHandler:
         print("First Response:", response_json)
 
         """处理包含tool_calls的响应并进行后续调用"""
-        if "choices" in response_json and len(response_json["choices"]) > 0:
-            choice = response_json["choices"][0]
-            if "message" in choice and "tool_calls" in choice["message"]:
-                tool_call = choice["message"]["tool_calls"][0]
-                if tool_call["type"] == "function":
-                    func_name = tool_call["function"]["name"]
-                    func_args = json.loads(tool_call["function"]["arguments"])
-                    result = self.function_map[func_name](**func_args) if func_args else self.function_map[func_name]()
-                    
-                    messages.append(choice["message"])
-                    messages.append({
-                        "role": "tool",
-                        "tool_call_id": tool_call["id"],
-                        "content": str(result)
-                    })
-                    
-                    response = requests.post(
-                        "https://models.inference.ai.azure.com/chat/completions",
-                        headers={
-                            "Authorization": f"Bearer {self.token}",
-                            "Content-Type": "application/json"
-                        },
-                        json={
-                            "messages": messages,
-                            "model": "gpt-4o",
-                            "tools": [{"type": "function", "function": func} for func in self.functions]
-                        }
-                    )
+        
+        choice = response_json["choices"][0]
+        
+        tool_call = choice["message"]["tool_calls"][0]
+        
+        func_name = tool_call["function"]["name"]
+        func_args = json.loads(tool_call["function"]["arguments"])
+        result = self.function_map[func_name](**func_args) if func_args else self.function_map[func_name]()
+        
+        messages.append(choice["message"])
+        messages.append({
+            "role": "tool",
+            "tool_call_id": tool_call["id"],
+            "content": str(result)
+        })
+        
+        print("Second messages:", messages)
+        
+        def generate():
+        response = requests.post(
+            "https://models.inference.ai.azure.com/chat/completions",
+            headers={
+                "Authorization": f"Bearer {self.token}",
+                "Content-Type": "application/json"
+            },
+            json={
+                "messages": messages,
+                "model": "gpt-4o",
+                "tools": [{"type": "function", "function": func} for func in self.functions],
+                "stream": True
+            },
+            stream=True
+        )
 
-                    response_json = response.json()                   
-                    print("Second Response:", response_json)
+        for chunk in response.iter_content(chunk_size=None):
+            yield chunk
 
-        return response_json
+        return response(stream_with_context(generate()), mimetype="application/json")
