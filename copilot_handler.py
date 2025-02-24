@@ -50,7 +50,8 @@ class CopilotHandler:
 
         prompt = """
         Please analyze the following code:
-        - If no code is provided, use no_code_selected function to remind the user
+        - If no code is provided, reminde the user to provide code
+        - If the code is not in Python or Java, remind the user to provide Python or Java code
         - If it's Python code, use get_python_guideline function to analyze it
         - If it's Java code, use get_java_guideline function to analyze it
         - Based on the function results, provide detailed suggestions for improvement
@@ -133,7 +134,7 @@ class CopilotHandler:
                     print("Second Response:", response.json())
                     # 再次调用API
                     return response.json()
-        
-        return None
+        else:
+            return response_json
 
 
