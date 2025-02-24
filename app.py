@@ -1,6 +1,7 @@
 from flask import Flask, request, Response, stream_with_context, render_template, redirect, url_for
 import requests
 import json
+from typing import List, Dict, Any
 from utils import GitHubUtils
 from functions.python_guidelines import get_python_guideline
 from functions.java_guidelines import get_java_guideline
@@ -122,8 +123,7 @@ def handle_post():
 
     print("Target Code Block:", target_code_block)
 
-    copilot_handler = CopilotHandler(github_utils.token)
-    messages = copilot_handler.build_messages(
+    messages = build_messages(
         user_name=user,
         selected_code=target_code_block
     )
