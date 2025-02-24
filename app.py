@@ -19,6 +19,8 @@ def handle_post():
     user = github_utils.get_github_user()
     
     payload = request.get_json()
+
+    print("Payload:", payload)
     copilot_references = payload["messages"][-1]["copilot_references"]
     client_selection_block = next(
         (ref for ref in copilot_references if ref["type"] == "client.selection"),
@@ -31,7 +33,7 @@ def handle_post():
         target_code_block = client_selection_block["data"]["content"]
 
     print("Target Code Block:", target_code_block)
-    
+
     copilot_handler = CopilotHandler(github_utils.token)
     messages = copilot_handler.build_messages(
         user_name=user,
