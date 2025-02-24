@@ -30,7 +30,7 @@ class GitHubUtils:
             return False
         
         # get the public keys from github api
-        GITHUB_KEYS_URI = "https://api.github.com/meta/public_keys"
+        GITHUB_KEYS_URI = "https://api.github.com/meta/public_keys/copilot_api"
         headers = {
             "Authorization": f"Bearer {self.token}"
         }
