@@ -83,7 +83,7 @@ class CopilotHandler:
         print("build_messages:", messages)
         return messages
 
-    def call_copilot_api(self, messages: List[Dict[str, str]]) -> requests.Response:
+    def call_copilot_api(self, messages: List[Dict[str, str]]):
         """调用Copilot API进行代码分析"""
         response = requests.post(
             "https://models.inference.ai.azure.com/chat/completions",
@@ -100,8 +100,8 @@ class CopilotHandler:
         )
 
         response_json = response.json()
-
         print("First Response:", response_json)
+
         """处理包含tool_calls的响应并进行后续调用"""
         if "choices" in response_json and len(response_json["choices"]) > 0:
             choice = response_json["choices"][0]
@@ -132,10 +132,9 @@ class CopilotHandler:
                         }
                     )
 
-                    print("Second Response:", response.json())
-                    # 再次调用API
-                    return response.json()
-        else:
-            return response_json
+                    response_json = response.json()                   
+                    print("Second Response:", response_json)
 
-
+        content = response_json["choices"][0]["message"]["content"]
+        print("Final Content:", content)
+        return content
