@@ -135,6 +135,4 @@ class CopilotHandler:
                     response_json = response.json()                   
                     print("Second Response:", response_json)
 
-        content = response_json["choices"][0]["message"]["content"]
-        print("Final Content:", content)
-        return content
+        return response_json

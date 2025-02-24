@@ -41,8 +41,9 @@ def handle_post():
     )
     
     # 调用 Copilot API
-    content = copilot_handler.call_copilot_api(messages)
-    return Response("good", mimetype='application/json')
+    json_result = copilot_handler.call_copilot_api(messages)
+    print("Result:", json_result)
+    return Response(json_result, mimetype='application/json')
 
 if __name__ == "__main__":
     app.run(port=8000)
