@@ -1,4 +1,5 @@
 import requests
+from flask import Flask, request, Response, stream_with_context
 from typing import List, Dict, Any
 import json
 from functions.python_guidelines import get_python_guideline
@@ -79,7 +80,7 @@ class CopilotHandler:
         })
         messages.insert(0, {
             "role": "system",
-            "content": "You are a helpful programming assistant specialized in code analysis. You always provide code analysis based on guidelines. But don't ask any questions"
+            "content": "You are a helpful programming assistant specialized in code analysis. You always show the guidelines that you refer first, then provide code analysis based on guidelines. But don't ask any questions"
         })
         messages.insert(0, {
             "role": "system",
@@ -150,4 +151,4 @@ class CopilotHandler:
             for chunk in response.iter_content(chunk_size=None):
                 yield chunk
 
-        return response(stream_with_context(generate()), mimetype="application/json")
+        return Response(stream_with_context(generate()), mimetype="application/json")
