@@ -84,7 +84,7 @@ class CopilotHandler:
         })
         messages.insert(0, {
             "role": "system",
-            "content": f"Start every response with the user's name, which is @{user_name}, and also say 'this is PythonGenie'."
+            "content": f"Start every response with the user's name, which is @{user_name}, and also say 'this is CodeGenie'."
         })
 
         # Keep only 3 messages
