@@ -1,0 +1,60 @@
+{
+    "copilot_thread_id": "5611925b-bb7b-4bdb-afb4-63432cf1bf0d",
+    "messages": [
+        {
+            "role": "user",
+            "content": "请分析",
+            "copilot_references": [
+                {
+                    "type": "client.file",
+                    "data": {
+                        "content": "package com.contoso.gce.utils;\r\n\r\nimport java.util.Base64;\r\nimport java.nio.charset.StandardCharsets;\r\n\r\n\r\npublic class EncodingUtil {\r\n    public static String encodeBase64(String input) {\r\n        return Base64.getEncoder().encodeToString(input.getBytes(StandardCharsets.UTF_8));\r\n    }\r\n}\r\n",
+                        "language": "java"
+                    },
+                    "id": "src\\main\\java\\com\\contoso\\gce\\utils\\EncodingUtil.java",
+                    "is_implicit": true,
+                    "metadata": {
+                        "display_name": "",
+                        "display_icon": "",
+                        "display_url": ""
+                    }
+                },
+                {
+                    "type": "client.selection",
+                    "data": {
+                        "content": "package com.contoso.gce.utils;\r\n\r\nimport java.util.Base64;\r\nimport java.nio.charset.StandardCharsets;\r\n\r\n\r\npublic class EncodingUtil {\r\n    public static String encodeBase64(String input) {\r\n        return Base64.getEncoder().encodeToString(input.getBytes(StandardCharsets.UTF_8));\r\n    }\r\n}\r\n",
+                        "end": {
+                            "col": 0,
+                            "line": 11
+                        },
+                        "start": {
+                            "col": 0,
+                            "line": 0
+                        }
+                    },
+                    "id": "src\\main\\java\\com\\contoso\\gce\\utils\\EncodingUtil.java",
+                    "is_implicit": true,
+                    "metadata": {
+                        "display_name": "",
+                        "display_icon": "",
+                        "display_url": ""
+                    }
+                }
+            ],
+            "copilot_confirmations": null
+        }
+    ],
+    "stop": null,
+    "top_p": 1,
+    "temperature": 0.1,
+    "max_tokens": 4096,
+    "presence_penalty": 0,
+    "frequency_penalty": 0,
+    "response_format": null,
+    "copilot_skills": [],
+    "agent": "codechecker001",
+    "client_id": "Iv23lit508XBJbnBEbl9",
+    "tools": null,
+    "functions": null,
+    "model": ""
+}
