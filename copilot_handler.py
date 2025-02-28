@@ -97,7 +97,7 @@ class CopilotHandler:
     def call_copilot_api(self, messages: List[Dict[str, str]]):
         """调用Copilot API进行代码分析"""
         response = requests.post(
-            "https://models.inference.ai.azure.com/chat/completions",
+            "https://api.githubcopilot.com/chat/completions",
             headers={
                 "Authorization": f"Bearer {self.token}",
                 "Content-Type": "application/json"
@@ -134,7 +134,7 @@ class CopilotHandler:
         
         def generate():
             response = requests.post(
-                "https://models.inference.ai.azure.com/chat/completions",
+                "https://api.githubcopilot.com/chat/completions",
                 headers={
                     "Authorization": f"Bearer {self.token}",
                     "Content-Type": "application/json"
